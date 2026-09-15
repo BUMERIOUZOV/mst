@@ -32,11 +32,11 @@
             <h1 class="hero-title">Добро пожаловать на идеальный сервер Анархии,созданный студентами РГЭУ РИНХ</h1>
             <p class="hero-subtitle">Присоединяйтесь к развивающемуся сообществу игроков, стройте свою империю и выживайте на официальном сервере проекта BGMS Network.</p>
             
-            <!-- Счетчик с подготовленной мигающей точкой -->
+            <!-- Счетчик с автоматическим онлайном -->
             <div class="counter-container">
                 <div class="player-counter">
-                    <span class="pulse-dot"></span>
-                    <span class="counter-text">В сети: <strong>0/600</strong> игроков</span> <!-- создать js скрипт связанный с майнкрафтом для мониторинга онлайна -->
+                    <span class="pulse-dot" id="status-dot"></span>
+                    <span class="counter-text" id="server-status">Загрузка статуса...</span>
                 </div>
             </div>
 
@@ -187,8 +187,9 @@
 
     <!-- СКРИПТ ДЛЯ ИНТЕРАКТИВНОГО КОПИРОВАНИЯ IP -->
     <script>
+        // Функция копирования IP адреса
         function copyServerIP() {
-            const ipText = "151.0.50.17:25565";
+            const ipText = "151.0.50.17:25565"; // Укажите IP вашего сервера для копирования
             navigator.clipboard.writeText(ipText).then(() => {
                 const btnText = document.querySelector('.btn-text');
                 const originalText = btnText.innerText;
@@ -200,6 +201,38 @@
                 console.error('Не удалось скопировать текст: ', err);
             });
         }
+
+        // Функция автоматического обновления онлайна
+        function updateServerStatus() {
+            const serverIP = "151.0.50.17:25565"; // СЮДА ВПИШИТЕ IP ИЛИ ДОМЕН ВАШЕГО ИГРОВОГО СЕРВЕРА
+            const statusTextElement = document.getElementById('server-status');
+            const statusDotElement = document.getElementById('status-dot');
+
+            // Запрос к бесплатному API статуса серверов Майнкрафт
+            fetch(`https://mcsrvstat.us{serverIP}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.online) {
+                        // Если сервер включен, выводим реальный онлайн
+                        statusTextElement.innerHTML = `В сети: <strong>${data.players.online}/${data.players.max}</strong> игроков`;
+                        statusDotElement.className = "pulse-dot online"; // Зеленая мигающая точка
+                    } else {
+                        // Если сервер выключен
+                        statusTextElement.innerHTML = `<span style="color: #ff4757;">Сервер офлайн</span>`;
+                        statusDotElement.className = "pulse-dot offline"; // Красная точка
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка получения статуса:', error);
+                    statusTextElement.innerHTML = `В сети: <strong>0/0</strong>`;
+                });
+        }
+
+        // Запускаем проверку при открытии сайта
+        updateServerStatus();
+        
+        // Автоматически обновляем онлайн каждые 60 секунд, чтобы цифры менялись сами
+        setInterval(updateServerStatus, 60000);
     </script>
 </body>
 </html>
