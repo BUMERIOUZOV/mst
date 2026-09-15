@@ -201,27 +201,29 @@
             });
         }
 
-        // Функция автоматического обновления онлайна
+        // БЕЗОТКАЗНАЯ ФУНКЦИЯ ОБНОВЛЕНИЯ ОНЛАЙНА ЧЕРЕЗ МОНИТОРИНГ
         function updateServerStatus() {
-            const serverIP = "151.0.50.17"; // СЮДА ВПИШИТЕ IP ВАШЕГО ДРУГА (НАПРИМЕР: "95.24.110.54")
+            const serverID = "319522"; 
+            
             const statusTextElement = document.getElementById('server-status');
             const statusDotElement = document.getElementById('status-dot');
 
-            fetch(`https://mcsrvstat.us{serverIP}`)
+            // Запрос к API мониторинга, который всегда открыт для сайтов
+            fetch(`https://minecraft-mp.com{serverID}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.online === true && data.players) {
-                        // Если сервер включен — горит ЗЕЛЕНЫЙ и пишется онлайн
-                        statusTextElement.innerHTML = `В сети: <strong>${data.players.online}/${data.players.max}</strong> игроков`;
+                    // Проверяем статус, который отдал мониторинг
+                    if (data.is_online === "1") {
+                        // Если сервер в сети — горит ЗЕЛЕНЫЙ
+                        statusTextElement.innerHTML = `В сети: <strong>${data.players}/${data.maxplayers}</strong> игроков`;
                         statusDotElement.className = "pulse-dot online";
                     } else {
-                        // Если сервер выключен в панели API — горит КРАСНЫЙ
+                        // Если сервер выключен по данным мониторинга — горит КРАСНЫЙ
                         statusTextElement.innerHTML = `Сервер: <strong>Офлайн</strong>`;
                         statusDotElement.className = "pulse-dot offline";
                     }
                 })
                 .catch(error => {
-                    // Если произошла ошибка сети или сервер недоступен — горит КРАСНЫЙ
                     console.error('Ошибка получения статуса:', error);
                     statusTextElement.innerHTML = `Сервер: <strong>Выключен</strong>`;
                     statusDotElement.className = "pulse-dot offline";
@@ -231,8 +233,8 @@
         // Запускаем проверку при открытии сайта
         updateServerStatus();
         
-        // Автоматически обновляем онлайн каждые 60 секунд
-        setInterval(updateServerStatus, 60000);
+        // Автоматически обновляем онлайн каждые 2 минуты, чтобы не спамить мониторинг
+        setInterval(updateServerStatus, 120000);
     </script>
 </body>
 </html>
