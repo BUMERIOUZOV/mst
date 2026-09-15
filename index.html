@@ -208,17 +208,20 @@
             const statusTextElement = document.getElementById('server-status');
             const statusDotElement = document.getElementById('status-dot');
 
-            // Запрос к API мониторинга, который всегда открыт для сайтов
-            fetch(`https://minecraft-mp.com{serverID}`)
-                .then(response => response.json())
+            // Запрашиваем онлайн в текстовом формате, который браузеры не блокируют
+            fetch(`https://minecraft-mp.com{serverID}&mode=queue`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Сбой сети');
+                    // Сначала делаем тестовый запрос к базовому API для проверки доступности
+                    return fetch(`https://mcsrvstat.us`);
+                })
+                .then(res => res.json())
                 .then(data => {
-                    // Проверяем статус, который отдал мониторинг
-                    if (data.is_online === "1") {
-                        // Если сервер в сети — горит ЗЕЛЕНЫЙ
-                        statusTextElement.innerHTML = `В сети: <strong>${data.players}/${data.maxplayers}</strong> игроков`;
+                    // Используем комбинированный метод проверки статуса
+                    if (data.online === true) {
+                        statusTextElement.innerHTML = `В сети: <strong>${data.players.online}/${data.players.max}</strong> игроков`;
                         statusDotElement.className = "pulse-dot online";
                     } else {
-                        // Если сервер выключен по данным мониторинга — горит КРАСНЫЙ
                         statusTextElement.innerHTML = `Сервер: <strong>Офлайн</strong>`;
                         statusDotElement.className = "pulse-dot offline";
                     }
@@ -230,10 +233,10 @@
                 });
         }
 
-        // Запускаем проверку при открытии сайта
+        // Запускаем проверку статуса при открытии страницы
         updateServerStatus();
         
-        // Автоматически обновляем онлайн каждые 2 минуты, чтобы не спамить мониторинг
+        // Автоматически обновляем онлайн каждые 2 минуты
         setInterval(updateServerStatus, 120000);
     </script>
 </body>
