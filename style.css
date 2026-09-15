@@ -620,3 +620,16 @@ body {
         gap: 40px;
     }
 }
+/* Цвет точки, когда сервер работает */
+.pulse-dot.online {
+    background-color: #2ecc71;
+    box-shadow: 0 0 10px #2ecc71, 0 0 20px #2ecc71;
+    animation: glow-pulse 1.5s infinite alternate;
+}
+
+/* Цвет точки, когда сервер выключен (офлайн) */
+.pulse-dot.offline {
+    background-color: #ff4757; /* Красный цвет */
+    box-shadow: 0 0 10px #ff4757;
+    animation: none; /* Отключаем мигание для выключенного сервера */
+}
