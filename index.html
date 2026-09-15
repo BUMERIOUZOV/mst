@@ -185,7 +185,6 @@
         <p>&copy; 2026 BGMS Network. Все права защищены. Сайт не связан с Mojang Studios.</p>
     </footer>
 
-    <!-- СКРИПТ ДЛЯ ИНТЕРАКТИВНОГО КОПИРОВАНИЯ IP -->
     <script>
         // Функция копирования IP адреса
         function copyServerIP() {
@@ -198,40 +197,41 @@
                     btnText.innerText = originalText;
                 }, 2000);
             }).catch(err => {
-                console.error('Не удалось скопировать текст: ', err);
+                console.error('Не удалось скопировать text: ', err);
             });
         }
 
         // Функция автоматического обновления онлайна
         function updateServerStatus() {
-            const serverIP = "151.0.50.17:25565"; // СЮДА ВПИШИТЕ IP ИЛИ ДОМЕН ВАШЕГО ИГРОВОГО СЕРВЕРА
+            const serverIP = "151.0.50.17:25565"; // СЮДА ВПИШИТЕ IP ВАШЕГО ДРУГА (НАПРИМЕР: "95.24.110.54")
             const statusTextElement = document.getElementById('server-status');
             const statusDotElement = document.getElementById('status-dot');
 
-            // Запрос к бесплатному API статуса серверов Майнкрафт
             fetch(`https://mcsrvstat.us{serverIP}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.online) {
-                        // Если сервер включен, выводим реальный онлайн
+                    if (data.online === true && data.players) {
+                        // Если сервер включен — горит ЗЕЛЕНЫЙ и пишется онлайн
                         statusTextElement.innerHTML = `В сети: <strong>${data.players.online}/${data.players.max}</strong> игроков`;
-                        statusDotElement.className = "pulse-dot online"; // Зеленая мигающая точка
+                        statusDotElement.className = "pulse-dot online";
                     } else {
-                        // Если сервер выключен
-                        statusTextElement.innerHTML = `<span style="color: #ff4757;">Сервер офлайн</span>`;
-                        statusDotElement.className = "pulse-dot offline"; // Красная точка
+                        // Если сервер выключен в панели API — горит КРАСНЫЙ
+                        statusTextElement.innerHTML = `Сервер: <strong>Офлайн</strong>`;
+                        statusDotElement.className = "pulse-dot offline";
                     }
                 })
                 .catch(error => {
+                    // Если произошла ошибка сети или сервер недоступен — горит КРАСНЫЙ
                     console.error('Ошибка получения статуса:', error);
-                    statusTextElement.innerHTML = `В сети: <strong>0/0</strong>`;
+                    statusTextElement.innerHTML = `Сервер: <strong>Выключен</strong>`;
+                    statusDotElement.className = "pulse-dot offline";
                 });
         }
 
         // Запускаем проверку при открытии сайта
         updateServerStatus();
         
-        // Автоматически обновляем онлайн каждые 60 секунд, чтобы цифры менялись сами
+        // Автоматически обновляем онлайн каждые 60 секунд
         setInterval(updateServerStatus, 60000);
     </script>
 </body>
