@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BGMS Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ШАПКА САЙТА И НАВИГАЦИЯ -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <span class="logo-highlight">BGMS</span> Network
+            </div>
+            <nav class="nav-menu">
+                <a href="#home" class="nav-link active">Главная</a>
+                <a href="#rules" class="nav-link">Правила</a>
+                <a href="#donate" class="nav-link">Донат</a>
+                <a href="#how-to-join" class="nav-link">Как играть</a>
+            </nav>
+        </div>
+    </header>
+    <!-- ГЛАВНЫЙ ЭКРАН С ОБНОВЛЕННЫМИ КНОПКАМИ И ИНДИКАТОРОМ -->
+    <section id="home" class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Добро пожаловать на идеальный сервер Анархии,созданный студентами РГЭУ РИНХ</h1>
+            <p class="hero-subtitle">Присоединяйтесь к развивающемуся сообществу игроков, стройте свою империю и выживайте на официальном сервере проекта BGMS Network.</p>
+            
+            <!-- Счетчик с подготовленной мигающей точкой -->
+            <div class="counter-container">
+                <div class="player-counter">
+                    <span class="pulse-dot"></span>
+                    <span class="counter-text">В сети: <strong>0/600</strong> игроков</span> <!-- создать js скрипт связанный с майнкрафтом для мониторинга онлайна -->
+                </div>
+            </div>
+
+            <!-- Группа из двух кнопок: IP и Лаунчер -->
+            <div class="cta-buttons-group">
+                <div class="button-container">
+                    <button class="btn-copy-ip" id="copyIpBtn" onclick="copyServerIP()">
+                        <span class="btn-text">Адрес сервера</span>
+                        <span class="server-ip">Нажми,чтобы скопировать</span>
+                    </button>
+                </div>
+                <div class="button-container">
+                    <!-- Ссылка напрямую качает созданный архив из папки проекта -->
+                    <a href="BGMS.rar" class="btn-launcher" download>
+                        <span class="launcher-btn-text">Скачать лаунчер</span>
+                        <span class="launcher-btn-sub">Архив ZIP</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- РАЗДЕЛ С ПРАВИЛАМИ СЕРВЕРА -->
+    <section id="rules" class="rules-section">
+        <div class="section-container">
+            <h2 class="section-title">Правила сервера</h2>
+            <div class="rules-container">
+                <div class="rule-item">
+                    <div class="rule-num">1.1</div>
+                    <div class="rule-content">
+                        <h3>Уважительное общение</h3>
+                        <p>Запрещены оскорбления игроков, администрации, флуд, капс и разжигание конфликтов в глобальном чате.</p>
+                    </div>
+                </div>
+                <div class="rule-item">
+                    <div class="rule-num">1.2</div>
+                    <div class="rule-content">
+                        <h3>Честная игра (Без читов)</h3>
+                        <p>Использование любого стороннего софта, читов, кликеров, x-ray или багов игры карается перманентным баном.</p>
+                    </div>
+                </div>
+                <div class="rule-item">
+                    <div class="rule-num">1.3</div>
+                    <div class="rule-content">
+                        <h3>Гриферство и постройки</h3>
+                        <p>Запрещено разрушение чужих построек, заливание лавой и создание нецензурных объектов на карте.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- РАЗДЕЛ С ОСОБЕННОСТЯМИ СЕРВЕРА -->
+    <section id="features" class="features-section">
+        <div class="section-container">
+            <h2 class="section-title">Особенности сервера</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌲</div>
+                    <h3 class="feature-name">Улучшенный Survival</h3>
+                    <p class="feature-desc">Исследуйте огромный полу-ванильный мир с надежной защитой от гриферства, уникальными биомами и регулярными ивентами.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💎</div>
+                    <h3 class="feature-name">Развитая экономика</h3>
+                    <p class="feature-desc">Торгуйте с другими игроками, открывайте собственные магазины и соревнуйтесь на рынке, чтобы стать самым богатым магнатом.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-name">Уникальные плагины</h3>
+                    <p class="feature-desc">Погрузитесь в игровой процесс с проработанными квестами, кастомными чарами и полезными механиками для комфортной игры.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- РАЗДЕЛ "КАК НАЧАТЬ ИГРАТЬ" -->
+    <section id="how-to-join" class="join-section">
+        <div class="section-container">
+            <h2 class="section-title">Как начать играть</h2>
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Запустите Minecraft</h3>
+                    <p class="step-desc">Откройте ваш лаунчер и запустите игру на версии <b>1.20+</b> (Java Edition).</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Добавьте сервер</h3>
+                    <p class="step-desc">Перейдите в раздел «Сетевая игра», нажмите «Добавить» и введите адрес нашего сервера.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Подключайтесь</h3>
+                    <p class="step-desc">Нажмите «Готово», выберите наш сервер из списка и нажмите «Подключиться», чтобы начать приключение!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- РАЗДЕЛ ДОНАТА / МАГАЗИНА -->
+    <section id="donate" class="donate-section">
+        <div class="section-container">
+            <h2 class="section-title">Привилегии и Донат</h2>
+            <div class="donate-grid">
+                <div class="donate-card">
+                    <div class="donate-badge">VIP</div>
+                    <div class="donate-price">99 ₽ <span>/ мес</span></div>
+                    <ul class="donate-features">
+                        <li>🟢 Префикс [VIP] в чате</li>
+                        <li>🟢 Доступ к команде /kit vip</li>
+                        <li>🟢 Доступ на полный сервер</li>
+                        <li>🟢 3 точки дома (/sethome)</li>
+                    </ul>
+                    <button class="btn-buy">Купить</button>
+                </div>
+                <div class="donate-card popular">
+                    <div class="popular-tag">Популярно</div>
+                    <div class="donate-badge">PREMIUM</div>
+                    <div class="donate-price">249 ₽ <span>/ мес</span></div>
+                    <ul class="donate-features">
+                        <li>🔵 Префикс [Premium] в чате</li>
+                        <li>🔵 Доступ к /kit premium и /fly</li>
+                        <li>🔵 Сохранение инвентаря</li>
+                        <li>🔵 5 точек дома (/sethome)</li>
+                    </ul>
+                    <button class="btn-buy">Купить</button>
+                </div>
+                <div class="donate-card">
+                    <div class="donate-badge">ЭЛИТА</div>
+                    <div class="donate-price">499 ₽ <span>/ навсегда</span></div>
+                    <ul class="donate-features">
+                        <li>👑 Префикс [Элита]</li>
+                        <li>👑 Доступ ко ВСЕМ командам</li>
+                        <li>👑 Виртуальный верстак /wb</li>
+                        <li>👑 Безлимитные регионы</li>
+                    </ul>
+                    <button class="btn-buy">Купить</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ПОДВАЛ САЙТА (FOOTER) -->
+    <footer class="main-footer">
+        <p>&copy; 2026 BGMS Network. Все права защищены. Сайт не связан с Mojang Studios.</p>
+    </footer>
+
+    <!-- СКРИПТ ДЛЯ ИНТЕРАКТИВНОГО КОПИРОВАНИЯ IP -->
+    <script>
+        function copyServerIP() {
+            const ipText = "151.0.50.17:25565";
+            navigator.clipboard.writeText(ipText).then(() => {
+                const btnText = document.querySelector('.btn-text');
+                const originalText = btnText.innerText;
+                btnText.innerText = "IP скопирован!";
+                setTimeout(() => {
+                    btnText.innerText = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Не удалось скопировать текст: ', err);
+            });
+        }
+    </script>
+</body>
+</html>
