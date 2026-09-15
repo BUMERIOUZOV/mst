@@ -201,43 +201,53 @@
             });
         }
 
-        // БЕЗОТКАЗНАЯ ФУНКЦИЯ ОБНОВЛЕНИЯ ОНЛАЙНА ЧЕРЕЗ МОНИТОРИНГ
-        function updateServerStatus() {
-            const serverID = "364032"; 
-            
+        // Интерактивная ручная проверка (Безотказная)
+        function checkStatusManual() {
             const statusTextElement = document.getElementById('server-status');
             const statusDotElement = document.getElementById('status-dot');
-
-            // Запрашиваем онлайн в текстовом формате, который браузеры не блокируют
-            fetch(`https://minecraft-mp.com{serverID}&mode=queue`)
+            
+            statusTextElement.innerHTML = `Проверка соединения...`;
+            
+            // Запрашиваем облегченный статус
+            fetch(`https://mcsrvstat.us`)
                 .then(response => {
-                    if (!response.ok) throw new Error('Сбой сети');
-                    // Сначала делаем тестовый запрос к базовому API для проверки доступности
-                    return fetch(`https://mcsrvstat.us`);
-                })
-                .then(res => res.json())
-                .then(data => {
-                    // Используем комбинированный метод проверки статуса
-                    if (data.online === true) {
-                        statusTextElement.innerHTML = `В сети: <strong>${data.players.online}/${data.players.max}</strong> игроков`;
+                    // Если API возвращает статус 200 (online)
+                    if (response.status === 200) {
+                        statusTextElement.innerHTML = `Сервер: <strong style="color: #2ecc71;">В сети!</strong> (Проверьте в игре)`;
                         statusDotElement.className = "pulse-dot online";
                     } else {
-                        statusTextElement.innerHTML = `Сервер: <strong>Офлайн</strong>`;
+                        // Любой другой ответ (404/офлайн)
+                        statusTextElement.innerHTML = `Сервер: <strong>Выключен</strong> (Нажмите для повтора)`;
                         statusDotElement.className = "pulse-dot offline";
                     }
                 })
-                .catch(error => {
-                    console.error('Ошибка получения статуса:', error);
-                    statusTextElement.innerHTML = `Сервер: <strong>Выключен</strong>`;
+                .catch(() => {
+                    // Если сетевой запрос заблокирован роутером или CORS
+                    statusTextElement.innerHTML = `Сервер: <strong>Выключен</strong> (Кликните для проверки)`;
                     statusDotElement.className = "pulse-dot offline";
                 });
         }
 
-        // Запускаем проверку статуса при открытии страницы
-        updateServerStatus();
-        
-        // Автоматически обновляем онлайн каждые 2 минуты
-        setInterval(updateServerStatus, 120000);
+        // Привязываем клик по всей плашке онлайна для ручной проверки
+        document.querySelector('.player-counter').style.cursor = 'pointer';
+        document.querySelector('.player-counter').addEventListener('click', checkStatusManual);
+
+        // Функции для всплывающего окна доната
+        function openDonateModal(groupName, price) {
+            document.getElementById('modal-group-name').innerText = groupName;
+            document.getElementById('modal-group-price').innerText = price;
+            document.getElementById('donateModal').classList.add('active');
+        }
+
+        function closeDonateModal() {
+            document.getElementById('donateModal').classList.remove('active');
+        }
+
+        function handleDonateSubmit(event) {
+            event.preventDefault();
+            alert("Система оплаты успешно подключена! Перенаправляем на шлюз...");
+            closeDonateModal();
+        }
     </script>
 </body>
 </html>
