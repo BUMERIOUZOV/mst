@@ -201,36 +201,25 @@
             });
         }
 
-        // Интерактивная ручная проверка (Безотказная)
+        // Интерактивная ручная проверка, которая не боится блокировок CORS
         function checkStatusManual() {
             const statusTextElement = document.getElementById('server-status');
             const statusDotElement = document.getElementById('status-dot');
             
             statusTextElement.innerHTML = `Проверка соединения...`;
             
-            // Запрашиваем облегченный статус
-            fetch(`https://mcsrvstat.us`)
-                .then(response => {
-                    // Если API возвращает статус 200 (online)
-                    if (response.status === 200) {
-                        statusTextElement.innerHTML = `Сервер: <strong style="color: #2ecc71;">В сети!</strong> (Проверьте в игре)`;
-                        statusDotElement.className = "pulse-dot online";
-                    } else {
-                        // Любой другой ответ (404/офлайн)
-                        statusTextElement.innerHTML = `Сервер: <strong>Выключен</strong> (Нажмите для повтора)`;
-                        statusDotElement.className = "pulse-dot offline";
-                    }
+            // Быстрый запрос без глубокого парсинга
+            fetch(`https://mcsrvstat.us`, { mode: 'no-cors' })
+                .then(() => {
+                    // Так как 'no-cors' скрывает точный ответ, мы даем игроку знать, как проверить наверняка
+                    statusTextElement.innerHTML = `Запрос отправлен! (Проверьте в игре)`;
+                    statusDotElement.className = "pulse-dot online";
                 })
                 .catch(() => {
-                    // Если сетевой запрос заблокирован роутером или CORS
-                    statusTextElement.innerHTML = `Сервер: <strong>Выключен</strong> (Кликните для проверки)`;
+                    statusTextElement.innerHTML = `Сервер: <strong>Выключен</strong> (Нажмите для проверки)`;
                     statusDotElement.className = "pulse-dot offline";
                 });
         }
-
-        // Привязываем клик по всей плашке онлайна для ручной проверки
-        document.querySelector('.player-counter').style.cursor = 'pointer';
-        document.querySelector('.player-counter').addEventListener('click', checkStatusManual);
 
         // Функции для всплывающего окна доната
         function openDonateModal(groupName, price) {
