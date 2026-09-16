@@ -177,24 +177,19 @@
         <p>&copy; 2026 BGMS Network. Все права защищены. Сайт не связан с Mojang Studios.</p>
     </footer>
 
-
-    <!-- ЛОГИКА СИСТЕМЫ ОНЛАЙНА И КОПИРОВАНИЯ -->
+        <!-- ЛОГИКА СИСТЕМЫ ОНЛАЙНА И КОПИРОВАНИЯ -->
     <script>
-        // IP-адрес для буфера обмена (при копировании игроком)
-        const SERVER_IP_TEXT = "151.0.50.17:25565"; 
-
-        // !!! ВСТАВЬТЕ СЮДА ID СЕРВЕРА С САЙТА MINECRAFT-MP.COM !!!
-        // Замените "123456" на реальный ID из ссылки на ваш сервер
-        const MINECRAFT_MP_SERVER_ID = "255224"; 
+        // IP-адрес вашего сервера (и для вывода онлайна, и для функции копирования)
+        const SERVER_IP = "mp.ultimis.net"; 
 
         // Функция копирования IP
         function copyServerIP() {
-            navigator.clipboard.writeText(SERVER_IP_TEXT).then(() => {
+            navigator.clipboard.writeText(SERVER_IP).then(() => {
                 const ipSubText = document.querySelector('.server-ip');
                 if (ipSubText) {
                     const originalText = ipSubText.innerText;
                     ipSubText.innerText = "IP скопирован!";
-                    ipSubText.style.color = "#2ecc71"; // Зеленая подсветка
+                    ipSubText.style.color = "#2ecc71"; // Подсвечиваем зеленым при успехе
                     
                     setTimeout(() => {
                         ipSubText.innerText = originalText;
@@ -206,53 +201,49 @@
             });
         }
 
-        // Запрос статуса через CORS-прокси allorigins
+        // Функция автоматического обновления онлайна через mcsrvstat API v3
         function updateServerStatus() {
             const statusTextElement = document.getElementById('server-status');
             const statusDotElement = document.getElementById('status-dot');
 
             if (!statusTextElement || !statusDotElement) return;
 
-            // Формируем ссылку на API мониторинга через прокси
-            const targetUrl = `https://minecraft-mp.com{MINECRAFT_MP_SERVER_ID}/`;
-            const proxyUrl = `https://allorigins.win{encodeURIComponent(targetUrl)}`;
-
-            fetch(proxyUrl)
-                .then(response => {
-                    if (response.ok) return response.json();
-                    throw new Error('Ошибка сети прокси');
-                })
-                .then(proxyData => {
-                    // Распаковываем ответ от прокси
-                    const data = JSON.parse(proxyData.contents);
-
-                    // Проверяем статус ("1" — сервер онлайн на мониторинге)
-                    if (data && data.status === "1") {
-                        const onlinePlayers = data.players || 0;
-                        const maxPlayers = data.maxplayers || 0;
+            // Делаем прямой открытый запрос без всяких блокировок CORS
+            fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.online === true) {
+                        // Если сервер работает — убираем красное свечение, включаем ЗЕЛЕНЫЙ
+                        const onlinePlayers = data.players ? data.players.online : 0;
+                        const maxPlayers = data.players ? data.players.max : 0;
                         
                         statusTextElement.innerHTML = `В сети: <strong>${onlinePlayers}/${maxPlayers}</strong> игроков`;
+                        
+                        // Принудительно меняем стили на зеленые (динамически убираем старое свечение)
                         statusDotElement.style.backgroundColor = '#2ecc71';
-                        statusDotElement.style.boxShadow = '0 0 10px #2ecc71';
+                        statusDotElement.style.boxShadow = '0 0 12px #2ecc71';
                     } else {
+                        // Если сервер выключен — горит КРАСНЫЙ
                         statusTextElement.innerHTML = `Сервер: <strong>Офлайн</strong>`;
                         statusDotElement.style.backgroundColor = '#e74c3c';
-                        statusDotElement.style.boxShadow = '0 0 10px #e74c3c';
+                        statusDotElement.style.boxShadow = '0 0 12px #e74c3c';
                     }
                 })
                 .catch(error => {
-                    console.error('Ошибка работы скрипта:', error);
+                    // При ошибке соединения — горит КРАСНЫЙ
+                    console.error('Ошибка получения статуса:', error);
                     statusTextElement.innerHTML = `Сервер: <strong>Выключен</strong>`;
                     statusDotElement.style.backgroundColor = '#e74c3c';
-                    statusDotElement.style.boxShadow = '0 0 10px #e74c3c';
+                    statusDotElement.style.boxShadow = '0 0 12px #e74c3c';
                 });
         }
 
-        // Мгновенный запуск при открытии страницы
+        // Запуск при загрузке страницы
         updateServerStatus();
         
-        // Автоматическое фоновое обновление каждые 5 минут
-        setInterval(updateServerStatus, 10000);
+        // Автоматически обновляем онлайн в фоне каждые 60 секунд
+        setInterval(updateServerStatus, 60000);
     </script>
 </body>
 </html>
+
