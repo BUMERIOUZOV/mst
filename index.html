@@ -30,8 +30,8 @@
     <section id="home" class="hero-section">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1 class="hero-title">Добро пожаловать на идеальный сервер Анархии,созданный студентами РГЭУ РИНХ</h1>
-            <p class="hero-subtitle">Присоединяйтесь к развивающемуся сообществу игроков, стройте свою империю и выживайте на официальном сервере проекта BGMS Network.</p>
+            <h1 class="hero-title">BGMS NETWORK — ТВОЯ АЛЬТЕРНАТИВА АНАРХИИ</h1>
+            <p class="hero-subtitle">Свобода действий. Своя территория. Своя история. Заходи в мир BGMS Network и начни создавать его вместе с другими игроками.</p>
             
             <!-- Счетчик с автоматическим онлайном -->
             <div class="counter-container">
@@ -45,15 +45,15 @@
             <div class="cta-buttons-group">
                 <div class="button-container">
                     <button class="btn-copy-ip" id="copyIpBtn" onclick="copyServerIP()">
-                        <span class="btn-text">Адрес сервера</span>
-                        <span class="server-ip">Нажми,чтобы скопировать</span>
+                        <span class="btn-text">ИГРАТЬ СЕЙЧАС</span>
+                        <span class="server-ip">Нажми, чтобы скопировать IP</span>
                     </button>
                 </div>
                 <div class="button-container">
                     <!-- Ссылка напрямую качает созданный архив из папки проекта -->
                     <a href="https://github.com/BUMERIOUZOV/mst/releases/latest/download/BGMS.Installer.exe" class="btn-launcher" download>
                         <span class="launcher-btn-text">Скачать лаунчер</span>
-                        <span class="launcher-btn-sub">Файл установки (.exe)</span>
+                        <span class="launcher-btn-sub">Архив RAR</span>
                     </a>
                 </div>
             </div>
@@ -209,7 +209,7 @@
             if (!statusTextElement || !statusDotElement) return;
 
             // Делаем прямой открытый запрос без всяких блокировок CORS
-            fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`)
+            fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`, { cache: 'no-store' })
                 .then(response => response.json())
                 .then(data => {
                     if (data.online === true) {
@@ -246,4 +246,6 @@
     </script>
 </body>
 </html>
+
+
 
