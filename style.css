@@ -178,6 +178,89 @@ body {
     }
 }
 
+/* Контейнер для вертикального списка режимов */
+.servers-modes-grid.vertical-list {
+    display: flex;
+    flex-direction: column; /* Выстраиваем карточки строго друг под друга списком */
+    gap: 15px; /* Уменьшили расстояние, чтобы список был собранным */
+    width: 100%;
+    max-width: 600px; /* Немного сузили ширину для более элегантного вида списка */
+    margin: 30px auto;
+}
+
+/* Общие стили для карточек в виде списка */
+.server-mode-card {
+    position: relative;
+    height: 120px; /* Уменьшили высоту со 140px до 100px, чтобы список не занимал весь экран */
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(22, 25, 32, 0.4);
+    backdrop-filter: blur(8px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center; /* Центрируем текст по вертикали внутри плашки */
+    text-align: left;
+    cursor: pointer;
+}
+
+/* Выравнивание информации по центру плашки */
+.mode-info {
+    position: relative;
+    z-index: 2;
+    padding: 5px 15px; /* Сделали аккуратные отступы внутри компактного списка */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+/* Индикаторы статуса (Онлайн / В разработке) */
+.mode-status-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    background-color: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.mode-status-badge.soon {
+    background-color: rgba(255, 165, 0, 0.15);
+    color: #ffa500; /* Оранжевый цвет для Soon */
+}
+
+.mode-name {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: #ffffff;
+    letter-spacing: -0.3px;
+}
+
+.mode-desc {
+    font-size: 0.85rem;
+    color: #a4b0be;
+    line-height: 1.4;
+}
+
+/* Адаптивность для мобильных телефонов */
+@media (max-width: 680px) {
+    .servers-modes-grid {
+        flex-direction: column; /* На смартфонах плашки встают друг под друга */
+        gap: 15px;
+    }
+    .server-mode-card {
+        height: 130px;
+    }
+}
+
+
 /* Контейнер для группы кнопок (выстраивает их в один ряд) */
 .cta-buttons-group {
     display: flex;
